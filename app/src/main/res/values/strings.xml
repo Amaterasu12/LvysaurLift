@@ -1,0 +1,5 @@
+<resources>
+    <string name="app_name">lvysaur\'s 4x4x8 (not ivysaur)</string>
+    <string name="main_activity_label">Workout Log</string>
+    <string name="create_workout_activity_label">Create Workout</string>
+</resources>
