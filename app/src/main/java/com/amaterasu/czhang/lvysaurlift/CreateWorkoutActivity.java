@@ -12,6 +12,8 @@ import java.util.Locale;
 
 public class CreateWorkoutActivity extends AppCompatActivity {
     private WorkoutData workout;
+    private TextView date1;
+
     private TextView name1;
     private TextView sets1;
     private EditText weight1;
@@ -65,6 +67,9 @@ public class CreateWorkoutActivity extends AppCompatActivity {
         sets4.setText(String.format(Locale.US, "%dx%d", exercise4.getSets(), exercise4.getReps()));
         weight4 = (EditText) findViewById(R.id.weight4);
         weight4.setText(String.format(Locale.US, "%d", exercise4.getWeightLB()));
+
+        date1 = (TextView) findViewById(R.id.dateView);
+        date1.setText(String.format(Locale.US, "Date: " + workout.getDate()));
     }
 
     public void saveEntry(View view) {
