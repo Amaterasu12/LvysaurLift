@@ -2,4 +2,7 @@
     <string name="app_name">lvysaur\'s 4x4x8 (not ivysaur)</string>
     <string name="main_activity_label">Workout Log</string>
     <string name="create_workout_activity_label">Create Workout</string>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
 </resources>

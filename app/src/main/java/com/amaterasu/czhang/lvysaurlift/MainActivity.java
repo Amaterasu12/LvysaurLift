@@ -30,7 +30,7 @@ public class MainActivity extends AppCompatActivity {
 
 
     public void addCard(View view) {
-        Intent intent = new Intent(this, CreateWorkoutActivity.class);
+        Intent intent = new Intent(this, EditWorkoutActivity.class);
         startActivity(intent);
     }
 

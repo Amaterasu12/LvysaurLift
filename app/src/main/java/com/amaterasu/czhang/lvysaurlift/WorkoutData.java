@@ -64,7 +64,7 @@ public class WorkoutData {
         }
         final Calendar c = Calendar.getInstance();
         year = c.get(Calendar.YEAR);
-        month = c.get(Calendar.MONTH)+1;
+        month = c.get(Calendar.MONTH);
         day = c.get(Calendar.DAY_OF_MONTH);
     }
 
@@ -112,7 +112,19 @@ public class WorkoutData {
 
     public String getDate() {
         String temp;
-        temp = String.format(Locale.US, "%d-%d-%d", year, month, day);
+        temp = String.format(Locale.US, "%d-%d-%d", year, month+1, day);
         return temp;
+    }
+
+    public int getYear() {
+        return year;
+    }
+
+    public int getMonth() {
+        return month;
+    }
+
+    public int getDay() {
+        return day;
     }
 }
