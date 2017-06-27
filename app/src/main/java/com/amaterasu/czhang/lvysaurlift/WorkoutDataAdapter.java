@@ -36,6 +36,7 @@ public class WorkoutDataAdapter extends RecyclerView.Adapter<WorkoutDataAdapter.
         public TextView weight4;
 
         public TextView dateView;
+        public TextView typeView;
         public ViewHolder(View itemView) {
             super(itemView);
             name1 = (TextView) itemView.findViewById(R.id.name1);
@@ -51,6 +52,7 @@ public class WorkoutDataAdapter extends RecyclerView.Adapter<WorkoutDataAdapter.
             sets4 = (TextView) itemView.findViewById(R.id.sets4);
             weight4 = (TextView) itemView.findViewById(R.id.weight4);
             dateView = (TextView) itemView.findViewById(R.id.date);
+            typeView = (TextView) itemView.findViewById(R.id.workoutType);
             CardView cardView = (CardView) itemView.findViewById(R.id.card_view);
             cardView.setOnClickListener(this);
         }
@@ -129,16 +131,11 @@ public class WorkoutDataAdapter extends RecyclerView.Adapter<WorkoutDataAdapter.
         weight4.setText(String.format(Locale.US, "%dlb", exercise4.getWeightLB()));
 
         viewHolder.dateView.setText(workoutData.getDate());
+        viewHolder.typeView.setText(String.format(Locale.US, "Workout split: %s", workoutData.getWorkoutType().toString()));
     }
 
     @Override
     public int getItemCount() {
         return m_workouts.size();
-    }
-
-    public void swap(ArrayList<WorkoutData> _workouts) {
-        m_workouts.clear();
-        m_workouts.addAll(_workouts);
-        notifyDataSetChanged();
     }
 }

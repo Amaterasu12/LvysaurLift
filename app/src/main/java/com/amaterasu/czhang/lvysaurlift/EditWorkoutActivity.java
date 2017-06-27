@@ -1,9 +1,16 @@
 package com.amaterasu.czhang.lvysaurlift;
 
+import android.content.Intent;
+import android.support.v4.view.MenuItemCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.EditText;
+import android.widget.Spinner;
 import android.widget.TextView;
 
 import java.util.ArrayList;
@@ -13,6 +20,7 @@ public class EditWorkoutActivity extends AppCompatActivity {
     private WorkoutData workout;
     private int position;
     public TextView date1;
+    public Spinner spinner;
 
     public TextView name1;
     public TextView sets1;
@@ -40,7 +48,7 @@ public class EditWorkoutActivity extends AppCompatActivity {
 
         else {
             setTitle("Create Entry");
-            workout = new WorkoutData(WorkoutData.WorkoutType.A_1);
+            workout = new WorkoutData(WorkoutData.WorkoutType.NONE);
         }
 
         ArrayList<Exercise> exercises = workout.getExercises();
@@ -81,6 +89,19 @@ public class EditWorkoutActivity extends AppCompatActivity {
         date1.setText(String.format(Locale.US, "Date: " + workout.getDate()));
     }
 
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.actionbar_spinner, menu);
+
+        MenuItem item = menu.findItem(R.id.typeSpinner);
+        spinner = (Spinner) MenuItemCompat.getActionView(item);
+        ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(this, R.array.workout_types, R.layout.spinner_item);
+        adapter.setDropDownViewResource(R.layout.spinner_dropdown_item);
+        spinner.setAdapter(adapter);
+        spinner.setOnItemSelectedListener(new SpinnerListener());
+        return true;
+    }
+
     public void saveEntry(View view) {
         ArrayList<Exercise> exercises = workout.getExercises();
         Exercise exercise1 = exercises.get(0);
@@ -96,6 +117,10 @@ public class EditWorkoutActivity extends AppCompatActivity {
         if (position == -1) {
             MainActivity.workouts.add(0, workout);
         }
+        if(position == -1 || position == 0) {
+            WorkoutData.updateProgressionWeight(workout);
+        }
+        WorkoutData.updateWorkoutType(workout.getWorkoutType());
         finish();
     }
 
@@ -110,5 +135,9 @@ public class EditWorkoutActivity extends AppCompatActivity {
 
     public WorkoutData getWorkout() {
         return workout;
+    }
+
+    public void setWorkout(WorkoutData workout) {
+        this.workout = workout;
     }
 }
