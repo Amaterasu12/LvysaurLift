@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.support.v4.view.MenuItemCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.text.method.KeyListener;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -34,6 +35,7 @@ public class EditWorkoutActivity extends AppCompatActivity {
     public TextView name4;
     public TextView sets4;
     public EditText weight4;
+    KeyListener weight4Listener;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -48,45 +50,29 @@ public class EditWorkoutActivity extends AppCompatActivity {
 
         else {
             setTitle("Create Entry");
-            workout = new WorkoutData(WorkoutData.WorkoutType.NONE);
+            workout = new WorkoutData(WorkoutData.currentType);
         }
 
-        ArrayList<Exercise> exercises = workout.getExercises();
-        Exercise exercise1 = exercises.get(0);
-        Exercise exercise2 = exercises.get(1);
-        Exercise exercise3 = exercises.get(2);
-        Exercise exercise4 = exercises.get(3);
-
         name1 = (TextView) findViewById(R.id.name1);
-        name1.setText(exercise1.getFullName());
         sets1 = (TextView) findViewById(R.id.sets1);
-        sets1.setText(String.format(Locale.US, "%dx%d", exercise1.getSets(), exercise1.getReps()));
         weight1 = (EditText) findViewById(R.id.weight1);
-        weight1.setText(String.format(Locale.US, "%d", exercise1.getWeightLB()));
 
         name2 = (TextView) findViewById(R.id.name2);
-        name2.setText(exercise2.getFullName());
         sets2 = (TextView) findViewById(R.id.sets2);
-        sets2.setText(String.format(Locale.US, "%dx%d", exercise2.getSets(), exercise2.getReps()));
         weight2 = (EditText) findViewById(R.id.weight2);
-        weight2.setText(String.format(Locale.US, "%d", exercise2.getWeightLB()));
 
         name3 = (TextView) findViewById(R.id.name3);
-        name3.setText(exercise3.getFullName());
         sets3 = (TextView) findViewById(R.id.sets3);
-        sets3.setText(String.format(Locale.US, "%dx%d", exercise3.getSets(), exercise3.getReps()));
         weight3 = (EditText) findViewById(R.id.weight3);
-        weight3.setText(String.format(Locale.US, "%d", exercise3.getWeightLB()));
 
         name4 = (TextView) findViewById(R.id.name4);
-        name4.setText(exercise4.getFullName());
         sets4 = (TextView) findViewById(R.id.sets4);
-        sets4.setText(String.format(Locale.US, "%dx%d", exercise4.getSets(), exercise4.getReps()));
         weight4 = (EditText) findViewById(R.id.weight4);
-        weight4.setText(String.format(Locale.US, "%d", exercise4.getWeightLB()));
+        weight4Listener = weight4.getKeyListener();
 
         date1 = (TextView) findViewById(R.id.dateView);
-        date1.setText(String.format(Locale.US, "Date: " + workout.getDate()));
+
+        loadDataView();
     }
 
     @Override
@@ -97,9 +83,66 @@ public class EditWorkoutActivity extends AppCompatActivity {
         spinner = (Spinner) MenuItemCompat.getActionView(item);
         ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(this, R.array.workout_types, R.layout.spinner_item);
         adapter.setDropDownViewResource(R.layout.spinner_dropdown_item);
+        int spinnerDefaultPosition;
+        switch(workout.getWorkoutType()) {
+            case A_1:
+                spinnerDefaultPosition = 0;
+                break;
+            case A_2:
+                spinnerDefaultPosition = 1;
+                break;
+            case A_3:
+                spinnerDefaultPosition = 2;
+                break;
+            case B_1:
+                spinnerDefaultPosition = 3;
+                break;
+            case B_2:
+                spinnerDefaultPosition = 4;
+                break;
+            case B_3:
+                spinnerDefaultPosition = 5;
+                break;
+            default:
+                spinnerDefaultPosition = 1;
+                break;
+        }
         spinner.setAdapter(adapter);
+        spinner.setSelection(spinnerDefaultPosition);
         spinner.setOnItemSelectedListener(new SpinnerListener());
         return true;
+    }
+
+    public void loadDataView() {
+        ArrayList<Exercise> exercises = workout.getExercises();
+        Exercise exercise1 = exercises.get(0);
+        Exercise exercise2 = exercises.get(1);
+        Exercise exercise3 = exercises.get(2);
+        Exercise exercise4 = exercises.get(3);
+
+        name1.setText(exercise1.getFullName());
+        sets1.setText(String.format(Locale.US, "%dx%d", exercise1.getSets(), exercise1.getReps()));
+        weight1.setText(String.format(Locale.US, "%d", exercise1.getWeightLB()));
+
+        name2.setText(exercise2.getFullName());
+        sets2.setText(String.format(Locale.US, "%dx%d", exercise2.getSets(), exercise2.getReps()));
+        weight2.setText(String.format(Locale.US, "%d", exercise2.getWeightLB()));
+
+        name3.setText(exercise3.getFullName());
+        sets3.setText(String.format(Locale.US, "%dx%d", exercise3.getSets(), exercise3.getReps()));
+        weight3.setText(String.format(Locale.US, "%d", exercise3.getWeightLB()));
+
+        name4.setText(exercise4.getFullName());
+        sets4.setText(String.format(Locale.US, "%dx%d", exercise4.getSets(), exercise4.getReps()));
+        weight4.setText(String.format(Locale.US, "%d", exercise4.getWeightLB()));
+        if(exercise4.getWeightLB() == Exercise.CHIN_UP_WEIGHT) {
+            weight4.setKeyListener(null);
+        }
+        else {
+            weight4.setKeyListener(weight4Listener);
+        }
+
+        date1.setText(String.format(Locale.US, "Date: " + workout.getDate()));
     }
 
     public void saveEntry(View view) {
@@ -119,8 +162,8 @@ public class EditWorkoutActivity extends AppCompatActivity {
         }
         if(position == -1 || position == 0) {
             WorkoutData.updateProgressionWeight(workout);
+            WorkoutData.updateWorkoutType();
         }
-        WorkoutData.updateWorkoutType(workout.getWorkoutType());
         finish();
     }
 

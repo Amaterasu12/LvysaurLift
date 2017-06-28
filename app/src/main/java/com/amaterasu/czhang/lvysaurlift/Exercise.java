@@ -12,7 +12,7 @@ public class Exercise {
     private int reps;
 
     public static final int AMRAP = 999;
-    public static final int CHIN_UP = -1;
+    public static final int CHIN_UP_WEIGHT = -1;
 
     public Exercise(String _fullName,
                     String _shortName,

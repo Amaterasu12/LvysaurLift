@@ -34,54 +34,40 @@ public class WorkoutData {
         //implement the different types in a future iteration
         switch (mtype) {
             case A_1:
-                BP+=5;
-                SQ+=5;
-                OHP+=5;
-                exercises.add(new Exercise("Bench Press", "BP", BP, 4, 4));
-                exercises.add(new Exercise("Squat", "SQ", (int)(SQ*0.9), 4, 8));
-                exercises.add(new Exercise("Overhead Press", "OHP", (int)(OHP*0.9), 4, 8));
+                exercises.add(new Exercise("Bench Press", "BP", BP+5, 4, 4));
+                exercises.add(new Exercise("Squat", "SQ", (int)((SQ+5)*0.9), 4, 8));
+                exercises.add(new Exercise("Overhead Press", "OHP", (int)((OHP+5)*0.9), 4, 8));
                 exercises.add(new Exercise("Chinups", "CHUP", -1, 4, 4));
                 break;
             case A_2:
-                DL+=5;
-                ROW+=5;
                 exercises.add(new Exercise("Bench Press", "BP", (int)(BP*0.9), 4, 8));
-                exercises.add(new Exercise("Deadlift", "DL", DL, 4, 4));
+                exercises.add(new Exercise("Deadlift", "DL", DL+5, 4, 4));
                 exercises.add(new Exercise("Overhead Press", "OHP", OHP, 4, 4));
-                exercises.add(new Exercise("Barbell Rows", "ROW", ROW, 4, 4));
+                exercises.add(new Exercise("Barbell Rows", "ROW", ROW+5, 4, 4));
                 break;
             case A_3:
-                BP+=5;
-                SQ+=5;
-                exercises.add(new Exercise("Bench Press", "BP", BP, 3, 4));
-                exercises.add(new Exercise("Squat", "SQ", SQ, 3, 4));
+                exercises.add(new Exercise("Bench Press", "BP", BP+5, 3, 4));
+                exercises.add(new Exercise("Squat", "SQ", SQ+5, 3, 4));
                 exercises.add(new Exercise("Overhead Press", "OHP", (int)(OHP*0.9), 4, 8));
                 exercises.add(new Exercise("Chinups", "CHUP", -1, 4, 4));
                 break;
             case B_1:
-                DL+=5;
-                OHP+=5;
-                ROW+=5;
                 exercises.add(new Exercise("Bench Press", "BP", (int)(BP*0.9), 4, 8));
-                exercises.add(new Exercise("Deadlift", "DL", (int)(DL*0.9), 4, 8));
-                exercises.add(new Exercise("Overhead Press", "OHP", OHP, 4, 4));
-                exercises.add(new Exercise("Barbell Rows", "ROW", ROW, 4, 4));
+                exercises.add(new Exercise("Deadlift", "DL", (int)((DL+5)*0.9), 4, 8));
+                exercises.add(new Exercise("Overhead Press", "OHP", OHP+5, 4, 4));
+                exercises.add(new Exercise("Barbell Rows", "ROW", ROW+5, 4, 4));
                 break;
             case B_2:
-                BP+=5;
-                SQ+=5;
-                exercises.add(new Exercise("Bench Press", "BP", BP, 4, 4));
-                exercises.add(new Exercise("Squat", "SQ", (int)(SQ*0.9), 4, 8));
+                exercises.add(new Exercise("Bench Press", "BP", BP+5, 4, 4));
+                exercises.add(new Exercise("Squat", "SQ", (int)((SQ+5)*0.9), 4, 8));
                 exercises.add(new Exercise("Overhead Press", "OHP", (int)(OHP*0.9), 4, 8));
                 exercises.add(new Exercise("Chinups", "CHUP", -1, 4, 8));
                 break;
             case B_3:
-                DL+=5;
-                ROW+=5;
                 exercises.add(new Exercise("Bench Press", "BP", (int)(BP*0.9), 4, 8));
-                exercises.add(new Exercise("Deadlift", "DL", DL, 3, 4));
+                exercises.add(new Exercise("Deadlift", "DL", DL+5, 3, 4));
                 exercises.add(new Exercise("Overhead Press", "OHP", OHP, 4, 4));
-                exercises.add(new Exercise("Barbell Rows", "ROW", (int)(ROW*0.9), 4, 8));
+                exercises.add(new Exercise("Barbell Rows", "ROW", (int)((ROW+5)*0.9), 4, 8));
                 break;
         }
         final Calendar c = Calendar.getInstance();
@@ -148,7 +134,8 @@ public class WorkoutData {
         if(newROW > ROW) { ROW = newROW; }
     }
 
-    public static void updateWorkoutType (WorkoutType type) {
+    public static void updateWorkoutType () {
+        WorkoutType type = MainActivity.workouts.get(0).getWorkoutType();
         switch (type) {
             case A_1:
                 currentType = WorkoutType.A_2;
