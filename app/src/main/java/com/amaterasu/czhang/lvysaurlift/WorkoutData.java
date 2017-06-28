@@ -6,6 +6,8 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Locale;
 
+import static com.amaterasu.czhang.lvysaurlift.WorkoutData.WorkoutType.A_1;
+
 /**
  * Created by czhang on 6/13/2017.
  */
@@ -18,7 +20,7 @@ public class WorkoutData {
     public static int ROW = 50;
 
     public enum WorkoutType {
-        A_1, A_2, A_3, B_1, B_2, B_3, NONE
+        A_1, A_2, A_3, B_1, B_2, B_3
     }
 
     private ArrayList<Exercise> exercises;
@@ -26,48 +28,48 @@ public class WorkoutData {
     private int month;
     private int day;
     private WorkoutType workoutType;
-    public static WorkoutType currentType = WorkoutType.A_1;
+    public static WorkoutType currentType = A_1;
 
     public WorkoutData(WorkoutType type) {
         exercises = new ArrayList<>(4);
-        WorkoutType mtype = (type == WorkoutType.NONE) ? currentType : type;
+        WorkoutType mtype = type;
         //implement the different types in a future iteration
         switch (mtype) {
             case A_1:
                 exercises.add(new Exercise("Bench Press", "BP", BP+5, 4, 4));
-                exercises.add(new Exercise("Squat", "SQ", (int)((SQ+5)*0.9), 4, 8));
-                exercises.add(new Exercise("Overhead Press", "OHP", (int)((OHP+5)*0.9), 4, 8));
-                exercises.add(new Exercise("Chinups", "CHUP", -1, 4, 4));
+                exercises.add(new Exercise("Squat", "SQ", SQ+5, 4, 8));
+                exercises.add(new Exercise("Overhead Press", "OHP", OHP+5, 4, 8));
+                exercises.add(new Exercise("Chinups", "CHUP", -1, 4, 8));
                 break;
             case A_2:
-                exercises.add(new Exercise("Bench Press", "BP", (int)(BP*0.9), 4, 8));
-                exercises.add(new Exercise("Deadlift", "DL", DL+5, 4, 4));
+                exercises.add(new Exercise("Bench Press", "BP", BP, 4, 8));
+                exercises.add(new Exercise("Deadlift", "DL", DL+5, 4, 8));
                 exercises.add(new Exercise("Overhead Press", "OHP", OHP, 4, 4));
-                exercises.add(new Exercise("Barbell Rows", "ROW", ROW+5, 4, 4));
+                exercises.add(new Exercise("Barbell Rows", "ROW", ROW+5, 4, 8));
                 break;
             case A_3:
-                exercises.add(new Exercise("Bench Press", "BP", BP+5, 3, 4));
-                exercises.add(new Exercise("Squat", "SQ", SQ+5, 3, 4));
-                exercises.add(new Exercise("Overhead Press", "OHP", (int)(OHP*0.9), 4, 8));
-                exercises.add(new Exercise("Chinups", "CHUP", -1, 4, 4));
+                exercises.add(new Exercise("Bench Press", "BP", BP+5, 4, 4));
+                exercises.add(new Exercise("Squat", "SQ", SQ+5, 4, 8));
+                exercises.add(new Exercise("Overhead Press", "OHP", OHP, 4, 8));
+                exercises.add(new Exercise("Chinups", "CHUP", -1, 4, 8));
                 break;
             case B_1:
-                exercises.add(new Exercise("Bench Press", "BP", (int)(BP*0.9), 4, 8));
-                exercises.add(new Exercise("Deadlift", "DL", (int)((DL+5)*0.9), 4, 8));
+                exercises.add(new Exercise("Bench Press", "BP", BP, 4, 8));
+                exercises.add(new Exercise("Deadlift", "DL", DL+5, 4, 8));
                 exercises.add(new Exercise("Overhead Press", "OHP", OHP+5, 4, 4));
-                exercises.add(new Exercise("Barbell Rows", "ROW", ROW+5, 4, 4));
+                exercises.add(new Exercise("Barbell Rows", "ROW", ROW+5, 4, 8));
                 break;
             case B_2:
                 exercises.add(new Exercise("Bench Press", "BP", BP+5, 4, 4));
-                exercises.add(new Exercise("Squat", "SQ", (int)((SQ+5)*0.9), 4, 8));
-                exercises.add(new Exercise("Overhead Press", "OHP", (int)(OHP*0.9), 4, 8));
+                exercises.add(new Exercise("Squat", "SQ", SQ+5, 4, 8));
+                exercises.add(new Exercise("Overhead Press", "OHP", OHP, 4, 8));
                 exercises.add(new Exercise("Chinups", "CHUP", -1, 4, 8));
                 break;
             case B_3:
-                exercises.add(new Exercise("Bench Press", "BP", (int)(BP*0.9), 4, 8));
-                exercises.add(new Exercise("Deadlift", "DL", DL+5, 3, 4));
+                exercises.add(new Exercise("Bench Press", "BP", BP, 4, 8));
+                exercises.add(new Exercise("Deadlift", "DL", DL+5, 4, 8));
                 exercises.add(new Exercise("Overhead Press", "OHP", OHP, 4, 4));
-                exercises.add(new Exercise("Barbell Rows", "ROW", (int)((ROW+5)*0.9), 4, 8));
+                exercises.add(new Exercise("Barbell Rows", "ROW", ROW+5, 4, 8));
                 break;
         }
         final Calendar c = Calendar.getInstance();
@@ -86,7 +88,7 @@ public class WorkoutData {
         ArrayList<WorkoutData> workouts = new ArrayList<>();
         for (int i = 0; i < numWorkouts; i++) {
             if(i%6 == 1){
-                workouts.add(new WorkoutData(WorkoutData.WorkoutType.A_1));
+                workouts.add(new WorkoutData(A_1));
             }
             else if(i%6 == 2){
                 workouts.add(new WorkoutData(WorkoutData.WorkoutType.A_2));
@@ -107,7 +109,12 @@ public class WorkoutData {
         return workouts;
     }
 
-    public static void updateProgressionWeight (WorkoutData workout) {
+    public static void updateProgressionWeight () {
+        if(MainActivity.workouts.isEmpty()) {
+            return;
+        }
+
+        WorkoutData workout = MainActivity.workouts.get(0);
         ArrayList<Exercise> exercises = workout.getExercises();
         int newBP = 0;
         int newSQ = 0;
@@ -122,10 +129,33 @@ public class WorkoutData {
                 newOHP = exercises.get(2).getWeightLB();
                 break;
             case A_2:
+                newBP = exercises.get(0).getWeightLB();
+                newDL = exercises.get(1).getWeightLB();
+                newOHP = exercises.get(2).getWeightLB();
+                newROW = exercises.get(3).getWeightLB();
                 break;
             case A_3:
+                newBP = exercises.get(0).getWeightLB();
+                newSQ = exercises.get(1).getWeightLB();
+                newOHP = exercises.get(2).getWeightLB();
                 break;
-
+            case B_1:
+                newBP = exercises.get(0).getWeightLB();
+                newDL = exercises.get(1).getWeightLB();
+                newOHP = exercises.get(2).getWeightLB();
+                newROW = exercises.get(3).getWeightLB();
+                break;
+            case B_2:
+                newBP = exercises.get(0).getWeightLB();
+                newSQ = exercises.get(1).getWeightLB();
+                newOHP = exercises.get(2).getWeightLB();
+                break;
+            case B_3:
+                newBP = exercises.get(0).getWeightLB();
+                newDL = exercises.get(1).getWeightLB();
+                newOHP = exercises.get(2).getWeightLB();
+                newROW = exercises.get(3).getWeightLB();
+                break;
         }
         if(newBP > BP) { BP = newBP; }
         if(newSQ > SQ) { SQ = newSQ; }
@@ -135,6 +165,11 @@ public class WorkoutData {
     }
 
     public static void updateWorkoutType () {
+        if(MainActivity.workouts.isEmpty()) {
+            currentType = WorkoutType.A_1;
+            return;
+        }
+
         WorkoutType type = MainActivity.workouts.get(0).getWorkoutType();
         switch (type) {
             case A_1:
@@ -155,7 +190,11 @@ public class WorkoutData {
             case B_3:
                 currentType = WorkoutType.A_1;
                 break;
+            default:
+                currentType = WorkoutType.A_1;
+                break;
         }
+        return;
     }
 
     public void setYear(int year) {

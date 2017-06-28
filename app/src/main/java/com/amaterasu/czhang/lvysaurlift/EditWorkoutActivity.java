@@ -161,7 +161,7 @@ public class EditWorkoutActivity extends AppCompatActivity {
             MainActivity.workouts.add(0, workout);
         }
         if(position == -1 || position == 0) {
-            WorkoutData.updateProgressionWeight(workout);
+            WorkoutData.updateProgressionWeight();
             WorkoutData.updateWorkoutType();
         }
         finish();
