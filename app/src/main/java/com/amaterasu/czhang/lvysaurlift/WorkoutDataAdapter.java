@@ -131,7 +131,7 @@ public class WorkoutDataAdapter extends RecyclerView.Adapter<WorkoutDataAdapter.
         weight4.setText(String.format(Locale.US, "%dlb", exercise4.getWeightLB()));
 
         viewHolder.dateView.setText(workoutData.getDate());
-        viewHolder.typeView.setText(String.format(Locale.US, "Workout split: %s", workoutData.getWorkoutType().toString()));
+        viewHolder.typeView.setText(String.format(Locale.US, "Split: %s", workoutData.getWorkoutType().toString()));
     }
 
     @Override

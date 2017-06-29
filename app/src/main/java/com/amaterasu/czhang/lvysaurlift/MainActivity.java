@@ -1,16 +1,25 @@
 package com.amaterasu.czhang.lvysaurlift;
 
+import android.content.Context;
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
+import android.widget.ArrayAdapter;
 
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
 import java.util.ArrayList;
 
 
 public class MainActivity extends AppCompatActivity {
+    private String WORKOUT_DATA = "workouts_data.txt";
+    private String METADATA = "metadata.txt";
     public static ArrayList<WorkoutData> workouts;
     private WorkoutDataAdapter adapter;
     @Override
@@ -21,7 +30,22 @@ public class MainActivity extends AppCompatActivity {
 
         RecyclerView rvWorkouts = (RecyclerView) findViewById(R.id.rvWorkouts);
 
-        workouts = WorkoutData.createWorkoutList(0);
+        try {
+            FileInputStream fis = openFileInput(WORKOUT_DATA);
+            ObjectInputStream ois = new ObjectInputStream(fis);
+            workouts = (ArrayList) ois.readObject();
+            ois.close();
+
+            fis = openFileInput(METADATA);
+            ois = new ObjectInputStream(fis);
+            StaticMetadataHelper metadata = (StaticMetadataHelper) ois.readObject();
+            ois.close();
+            metadata.restoreMetadata();
+        }   catch (IOException e) {
+            workouts = WorkoutData.createWorkoutList(0);
+        }   catch (ClassNotFoundException c) {
+            workouts = WorkoutData.createWorkoutList(0);
+        }
 
         adapter = new WorkoutDataAdapter(this, workouts);
         rvWorkouts.setAdapter(adapter);
@@ -37,8 +61,27 @@ public class MainActivity extends AppCompatActivity {
     @Override
     public void onResume() {
         super.onResume();  // Always call the superclass method first
-
         adapter.notifyDataSetChanged();
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+
+        try {
+            FileOutputStream fos = openFileOutput(WORKOUT_DATA, Context.MODE_PRIVATE);
+            ObjectOutputStream oos = new ObjectOutputStream(fos);
+            oos.writeObject(workouts);
+            oos.close();
+
+            fos = openFileOutput(METADATA, Context.MODE_PRIVATE);
+            oos = new ObjectOutputStream(fos);
+            StaticMetadataHelper metadata = new StaticMetadataHelper();
+            oos.writeObject(metadata);
+            oos.close();
+        }   catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
 }

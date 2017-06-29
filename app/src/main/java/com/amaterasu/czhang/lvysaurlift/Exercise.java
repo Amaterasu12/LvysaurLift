@@ -1,10 +1,12 @@
 package com.amaterasu.czhang.lvysaurlift;
 
+import java.io.Serializable;
+
 /**
  * Created by czhang on 6/13/2017.
  */
 
-public class Exercise {
+public class Exercise implements Serializable{
     private String fullName;
     private String shortName;
     private int weightLB;

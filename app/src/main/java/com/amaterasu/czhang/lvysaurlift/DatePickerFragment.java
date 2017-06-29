@@ -7,7 +7,9 @@ import android.support.v4.app.DialogFragment;
 import android.widget.DatePicker;
 
 import java.util.Calendar;
+import java.util.GregorianCalendar;
 import java.util.Locale;
+
 
 /**
  * Created by czhang on 6/26/2017.
@@ -39,6 +41,9 @@ public class DatePickerFragment extends DialogFragment implements DatePickerDial
         act.getWorkout().setYear(year);
         act.getWorkout().setMonth(month);
         act.getWorkout().setDay(day);
+
+        GregorianCalendar gregorianCalendar = new GregorianCalendar(year, month, day);
+        act.getWorkout().setDayOfWeek(gregorianCalendar.get(Calendar.DAY_OF_WEEK));
         act.date1.setText(String.format(Locale.US, "Date: " + act.getWorkout().getDate()));
     }
 }

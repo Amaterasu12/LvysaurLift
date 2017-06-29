@@ -1,7 +1,9 @@
 package com.amaterasu.czhang.lvysaurlift;
 
 import android.support.v7.widget.CardView;
+import android.widget.Switch;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Locale;
@@ -12,12 +14,13 @@ import static com.amaterasu.czhang.lvysaurlift.WorkoutData.WorkoutType.A_1;
  * Created by czhang on 6/13/2017.
  */
 
-public class WorkoutData {
-    public static int BP = 50;
-    public static int SQ = 50;
-    public static int OHP = 50;
-    public static int DL = 50;
-    public static int ROW = 50;
+public class WorkoutData implements Serializable{
+    public static int BP = 45;
+    public static int SQ = 45;
+    public static int OHP = 45;
+    public static int DL = 45;
+    public static int ROW = 45;
+    public static WorkoutType currentType = A_1;
 
     public enum WorkoutType {
         A_1, A_2, A_3, B_1, B_2, B_3
@@ -27,8 +30,8 @@ public class WorkoutData {
     private int year;
     private int month;
     private int day;
+    private int dayOfWeek;
     private WorkoutType workoutType;
-    public static WorkoutType currentType = A_1;
 
     public WorkoutData(WorkoutType type) {
         exercises = new ArrayList<>(4);
@@ -76,6 +79,7 @@ public class WorkoutData {
         year = c.get(Calendar.YEAR);
         month = c.get(Calendar.MONTH);
         day = c.get(Calendar.DAY_OF_MONTH);
+        dayOfWeek = c.get(Calendar.DAY_OF_WEEK);
         workoutType = mtype;
     }
 
@@ -109,8 +113,14 @@ public class WorkoutData {
         return workouts;
     }
 
+
     public static void updateProgressionWeight () {
         if(MainActivity.workouts.isEmpty()) {
+            BP = 45;
+            SQ = 45;
+            OHP = 45;
+            DL = 45;
+            ROW = 45;
             return;
         }
 
@@ -157,11 +167,11 @@ public class WorkoutData {
                 newROW = exercises.get(3).getWeightLB();
                 break;
         }
-        if(newBP > BP) { BP = newBP; }
-        if(newSQ > SQ) { SQ = newSQ; }
-        if(newOHP > OHP) { OHP = newOHP; }
-        if(newDL > DL) { DL = newDL; }
-        if(newROW > ROW) { ROW = newROW; }
+        if(newBP != 0) { BP = newBP; }
+        if(newSQ != 0) { SQ = newSQ; }
+        if(newOHP != 0) { OHP = newOHP; }
+        if(newDL != 0) { DL = newDL; }
+        if(newROW != 0) { ROW = newROW; }
     }
 
     public static void updateWorkoutType () {
@@ -197,6 +207,17 @@ public class WorkoutData {
         return;
     }
 
+    public static void clearWorkouts () {
+        MainActivity.workouts.clear();
+        BP = 45;
+        SQ = 45;
+        OHP = 45;
+        DL = 45;
+        ROW = 45;
+        currentType = WorkoutType.A_1;
+        return;
+    }
+
     public void setYear(int year) {
         this.year = year;
     }
@@ -213,9 +234,39 @@ public class WorkoutData {
         this.workoutType = workoutType;
     }
 
+    public void setDayOfWeek(int dayOfWeek) {
+        this.dayOfWeek = dayOfWeek;
+    }
+
     public String getDate() {
         String temp;
-        temp = String.format(Locale.US, "%d-%d-%d", year, month+1, day);
+        switch(dayOfWeek) {
+            case 1:
+                temp = "Sunday, ";
+                break;
+            case 2:
+                temp = "Monday, ";
+                break;
+            case 3:
+                temp = "Tuesday, ";
+                break;
+            case 4:
+                temp = "Wednesday, ";
+                break;
+            case 5:
+                temp = "Thursday, ";
+                break;
+            case 6:
+                temp = "Friday, ";
+                break;
+            case 7:
+                temp = "Saturday, ";
+                break;
+            default:
+                temp = "The Lord's Rest Day, ";
+                break;
+        }
+        temp += String.format(Locale.US, "%d-%d-%d", year, month+1, day);
         return temp;
     }
 
@@ -233,5 +284,9 @@ public class WorkoutData {
 
     public WorkoutType getWorkoutType() {
         return workoutType;
+    }
+
+    public int getDayOfWeek() {
+        return dayOfWeek;
     }
 }
