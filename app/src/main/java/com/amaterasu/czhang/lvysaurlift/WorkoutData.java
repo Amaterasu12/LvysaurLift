@@ -39,40 +39,40 @@ public class WorkoutData implements Serializable{
         //implement the different types in a future iteration
         switch (mtype) {
             case A_1:
-                exercises.add(new Exercise("Bench Press", "BP", BP+5, 4, 4));
-                exercises.add(new Exercise("Squat", "SQ", SQ+5, 4, 8));
-                exercises.add(new Exercise("Overhead Press", "OHP", OHP+5, 4, 8));
+                exercises.add(new Exercise("Bench Press", "BP", BP, 4, 4));
+                exercises.add(new Exercise("Squat", "SQ", SQ, 4, 8));
+                exercises.add(new Exercise("Overhead Press", "OHP", OHP, 4, 8));
                 exercises.add(new Exercise("Chinups", "CHUP", -1, 4, 8));
                 break;
             case A_2:
                 exercises.add(new Exercise("Bench Press", "BP", BP, 4, 8));
-                exercises.add(new Exercise("Deadlift", "DL", DL+5, 4, 8));
+                exercises.add(new Exercise("Deadlift", "DL", DL, 4, 8));
                 exercises.add(new Exercise("Overhead Press", "OHP", OHP, 4, 4));
-                exercises.add(new Exercise("Barbell Rows", "ROW", ROW+5, 4, 8));
+                exercises.add(new Exercise("Barbell Rows", "ROW", ROW, 4, 8));
                 break;
             case A_3:
-                exercises.add(new Exercise("Bench Press", "BP", BP+5, 4, 4));
-                exercises.add(new Exercise("Squat", "SQ", SQ+5, 4, 8));
+                exercises.add(new Exercise("Bench Press", "BP", BP, 4, 4));
+                exercises.add(new Exercise("Squat", "SQ", SQ, 4, 8));
                 exercises.add(new Exercise("Overhead Press", "OHP", OHP, 4, 8));
                 exercises.add(new Exercise("Chinups", "CHUP", -1, 4, 8));
                 break;
             case B_1:
                 exercises.add(new Exercise("Bench Press", "BP", BP, 4, 8));
-                exercises.add(new Exercise("Deadlift", "DL", DL+5, 4, 8));
-                exercises.add(new Exercise("Overhead Press", "OHP", OHP+5, 4, 4));
-                exercises.add(new Exercise("Barbell Rows", "ROW", ROW+5, 4, 8));
+                exercises.add(new Exercise("Deadlift", "DL", DL, 4, 8));
+                exercises.add(new Exercise("Overhead Press", "OHP", OHP, 4, 4));
+                exercises.add(new Exercise("Barbell Rows", "ROW", ROW, 4, 8));
                 break;
             case B_2:
-                exercises.add(new Exercise("Bench Press", "BP", BP+5, 4, 4));
-                exercises.add(new Exercise("Squat", "SQ", SQ+5, 4, 8));
+                exercises.add(new Exercise("Bench Press", "BP", BP, 4, 4));
+                exercises.add(new Exercise("Squat", "SQ", SQ, 4, 8));
                 exercises.add(new Exercise("Overhead Press", "OHP", OHP, 4, 8));
                 exercises.add(new Exercise("Chinups", "CHUP", -1, 4, 8));
                 break;
             case B_3:
                 exercises.add(new Exercise("Bench Press", "BP", BP, 4, 8));
-                exercises.add(new Exercise("Deadlift", "DL", DL+5, 4, 8));
+                exercises.add(new Exercise("Deadlift", "DL", DL, 4, 8));
                 exercises.add(new Exercise("Overhead Press", "OHP", OHP, 4, 4));
-                exercises.add(new Exercise("Barbell Rows", "ROW", ROW+5, 4, 8));
+                exercises.add(new Exercise("Barbell Rows", "ROW", ROW, 4, 8));
                 break;
         }
         final Calendar c = Calendar.getInstance();

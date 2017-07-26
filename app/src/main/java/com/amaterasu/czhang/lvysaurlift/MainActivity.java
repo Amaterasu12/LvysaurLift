@@ -1,11 +1,15 @@
 package com.amaterasu.czhang.lvysaurlift;
 
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.ArrayAdapter;
 
@@ -26,8 +30,7 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        setTitle("Workout History");
-
+        setTitle("Workout Log");
         RecyclerView rvWorkouts = (RecyclerView) findViewById(R.id.rvWorkouts);
 
         try {
@@ -52,6 +55,43 @@ public class MainActivity extends AppCompatActivity {
         rvWorkouts.setLayoutManager(new LinearLayoutManager(this));
     }
 
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.actionbar_button, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        int id = item.getItemId();
+
+        if(id == R.id.clear_all_button) {
+            AlertDialog.Builder builder = new AlertDialog.Builder(this);
+            builder.setTitle("Confirm Deletion");
+            builder.setMessage("Clear the workout log?");
+            builder.setPositiveButton("YES", new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                    WorkoutData.clearWorkouts();
+                    adapter.notifyDataSetChanged();
+                    dialog.dismiss();
+                }
+            });
+
+            builder.setNegativeButton("NO", new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                    dialog.dismiss();
+                }
+            });
+            if(!workouts.isEmpty()) {
+                AlertDialog alert = builder.create();
+                alert.show();
+            }
+        }
+
+        return super.onOptionsItemSelected(item);
+    }
 
     public void addCard(View view) {
         Intent intent = new Intent(this, EditWorkoutActivity.class);
